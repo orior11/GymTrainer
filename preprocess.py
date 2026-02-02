@@ -41,7 +41,7 @@ def extract_features(landmarks):
 sequences = []
 labels = []
 
-print(f"Starting LSTM Preprocessing from: {dataPath}")
+print("Starting LSTM Preprocessing")
 
 for classIndex, className in enumerate(classes):
     classFile = os.path.join(dataPath, className)
@@ -88,4 +88,5 @@ np.save(outputX, X)
 np.save(outputY, y)
 np.save(outputClasses, classes)
 
-print("Files saved successfully.")
+print("files saved successfully.")
+
