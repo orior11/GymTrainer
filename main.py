@@ -38,13 +38,8 @@ def speak(text):
             pass
     threading.Thread(target=run).start()
 
-print("Loading Model...")
-try:
     model = tf.keras.models.load_model(modelPath)
     print("SUCCESS: Model Loaded!")
-except Exception as e:
-    print(f"ERROR: Could not load {modelPath}. {e}")
-    exit()
 
 meadiapipePose = mp.solutions.pose
 meadiapipeDrawing = mp.solutions.drawing_utils
@@ -136,14 +131,9 @@ def count_reps(action, landmarks):
 print("Starting Camera...")
 cap = cv2.VideoCapture(0, cv2.CAP_DSHOW) 
 
-if not cap.isOpened():
-    print("ERROR: Camera failed to open. Please restart terminal.")
-    exit()
-
 sequence = []
 per = 0
 
-print("Starting Main Loop. Press 'q' to exit.")
 
 with meadiapipePose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as pose:
     while cap.isOpened():
@@ -241,8 +231,6 @@ with meadiapipePose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0
 
         cv2.imshow('AI Gym Trainer Pro', image)
 
-        if cv2.waitKey(10) & 0xFF == ord('q'):
-            break
-
     cap.release()
+
     cv2.destroyAllWindows()
