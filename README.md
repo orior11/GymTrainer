@@ -3,13 +3,17 @@
 **Deep Learning Final Project (2026a) | HIT**
 **Authors:** Amit Wagensberg & Ori Zarfaty
 
-![GymTrainer Banner](path/to/your/image.png)
-*(Optional: Place the AI image you generated here)*
-
 ## 📌 Overview
 GymTrainer is a real-time computer vision application designed to act as a personal AI fitness trainer. It utilizes **MediaPipe Pose** for skeletal tracking and a custom **Long Short-Term Memory (LSTM)** neural network to recognize exercises and count repetitions with high accuracy.
 
 Unlike simple geometric counters, GymTrainer uses deep learning to understand the *temporal dynamics* of movement, distinguishing between similar exercises (like Shoulder Press vs. Push-ups) and providing audio-visual feedback.
+
+## 📉 Baseline Comparison (Why Deep Learning?)
+To validate our approach, we initially implemented a standard Machine Learning baseline using a **Decision Tree Classifier**.
+
+* **The Experiment:** We trained a Decision Tree on the same geometric features without temporal context (treating each frame independently).
+* **The Result:** The Decision Tree performed poorly struggling to distinguish between static holds and dynamic movements (e.g., identifying the difference between "holding a push-up position" and "doing a push-up").
+* **Conclusion:** This failure confirmed that **Temporal Analysis** is critical. The LSTM model succeeded where the Decision Tree failed because it analyzes the *sequence* of 30 frames, allowing it to understand motion rather than just static poses.
 
 ## 🚀 Features
 * **Real-Time Action Recognition:** Classifies 4 distinct exercises:
@@ -36,18 +40,3 @@ The system operates on a 3-stage pipeline:
     * **Model:** Custom LSTM (Recurrent Neural Network).
     * **Input:** A sliding window of **30 frames** (temporal sequence).
     * **Output:** Probability distribution across the 4 exercise classes.
-
-## 📂 Project Structure
-```bash
-GymTrainer/
-├── data/                  # Dataset folder (videos)
-├── models/
-│   └── gym_lstm_model.keras  # The trained LSTM model
-├── utils/
-│   ├── classes.npy        # Class labels
-│   ├── X_data.npy         # Processed training features
-│   └── y_data.npy         # Processed training labels
-├── train_model.py         # Script to extract features and train the LSTM
-├── main.py                # Main application (Webcam inference)
-├── requirements.txt       # Dependencies
-└── README.md
