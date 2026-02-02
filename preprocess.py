@@ -3,7 +3,7 @@ import mediapipe as mp
 import numpy as np
 import os
 
-dataPath = r'C:\Users\PinhasZ\gymTrainer\data\final_kaggle_with_additional_video'
+dataPath = r'C:\Users\PinhasZ\gymTrainer\data\additional_video'
 classes = ['barbell biceps curl', 'push-up', 'shoulder press', 'squat']
 
 numOfFrames = 30
@@ -87,4 +87,5 @@ print(f"y (Labels): {y.shape}")
 np.save(outputX, X)
 np.save(outputY, y)
 np.save(outputClasses, classes)
+
 print("Files saved successfully.")
