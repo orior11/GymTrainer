@@ -40,3 +40,23 @@ The system operates on a 3-stage pipeline:
     * **Model:** Custom LSTM (Recurrent Neural Network).
     * **Input:** A sliding window of **30 frames** (temporal sequence).
     * **Output:** Probability distribution across the 4 exercise classes.
+  
+    ## 📂 Project Structure
+```bash
+GymTrainer/
+├── models/
+│   ├── gym_lstm_model.keras    # 🏆 Final LSTM Model (Deep Learning)
+│   └── gym_pose_classifier.pkl # 📉 Baseline Decision Tree Model (Weights)
+│
+├── data_processing/
+│   ├── X_data.npy              # Processed features for LSTM
+│   ├── y_data.npy              # Processed labels for LSTM
+│   └── classes.npy             # Class names (Squat, Push-up, etc.)
+│
+├── scripts/
+│   ├── train_lstm.py           # Main script to train the LSTM model
+│   ├── preprocess.py           # Data extraction pipeline for LSTM
+│   ├── old_preprocess.txt      # training for Decision Tree Baseline
+│   └── main.py                 # 🚀 Main Application (Webcam Inference)
+│
+└── README.md                   # Project Documentation
