@@ -41,7 +41,7 @@ The system operates on a 3-stage pipeline:
     * **Input:** A sliding window of **30 frames** (temporal sequence).
     * **Output:** Probability distribution across the 4 exercise classes.
   
-    ## 📂 Project Structure
+## 📂 Project Structure
 ```bash
 GymTrainer/
 ├── models/
@@ -59,4 +59,5 @@ GymTrainer/
 │   ├── old_preprocess.txt      # training for Decision Tree Baseline
 │   └── main.py                 # 🚀 Main Application (Webcam Inference)
 │
+├── Final_project_poster - deep project.pptx  # 🖼️ Project Poster Presentation
 └── README.md                   # Project Documentation
