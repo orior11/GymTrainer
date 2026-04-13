@@ -1,63 +1,52 @@
 # GymTrainer: AI-Powered Real-Time Exercise Analysis 🏋️‍♂️🤖
 
-**Deep Learning Final Project (2026a) | HIT**
-**Authors:** Amit Wagensberg & Ori Zarfaty
+**Deep Learning Final Project (2026a) | HIT** **Authors:** Amit Wagensberg & Ori Zarfaty
 
 ## 📌 Overview
-GymTrainer is a real-time computer vision application designed to act as a personal AI fitness trainer. It utilizes **MediaPipe Pose** for skeletal tracking and a custom **Long Short-Term Memory (LSTM)** neural network to recognize exercises and count repetitions with high accuracy.
+GymTrainer is a real-time computer vision application designed to act as a personal AI fitness trainer. It utilizes **MediaPipe Pose** for skeletal tracking and a custom **Gated Recurrent Unit (GRU)** neural network, implemented in **PyTorch**, to recognize exercises and count repetitions with high accuracy.
 
-Unlike simple geometric counters, GymTrainer uses deep learning to understand the *temporal dynamics* of movement, distinguishing between similar exercises (like Shoulder Press vs. Push-ups) and providing audio-visual feedback.
+By analyzing the temporal dynamics of movement, GymTrainer distinguishes between similar exercises and provides immediate audio-visual feedback, ensuring a robust solution for home and gym environments.
 
-## 📉 Baseline Comparison (Why Deep Learning?)
-To validate our approach, we initially implemented a standard Machine Learning baseline using a **Decision Tree Classifier**.
-
-* **The Experiment:** We trained a Decision Tree on the same geometric features without temporal context (treating each frame independently).
-* **The Result:** The Decision Tree performed poorly struggling to distinguish between static holds and dynamic movements (e.g., identifying the difference between "holding a push-up position" and "doing a push-up").
-* **Conclusion:** This failure confirmed that **Temporal Analysis** is critical. The LSTM model succeeded where the Decision Tree failed because it analyzes the *sequence* of 30 frames, allowing it to understand motion rather than just static poses.
+## 📉 Baseline Comparison
+To evaluate the effectiveness of our deep learning approach, we compared the GRU model against a **Random Forest** baseline:
+* **The Challenge:** The Random Forest model processes frames independently, making it difficult to distinguish between static poses and active movement.
+* **The Solution:** The **GRU** model analyzes a **sliding window of 30 frames**. This allows the system to understand the "flow" of motion and the temporal relationship between different phases of an exercise.
 
 ## 🚀 Features
 * **Real-Time Action Recognition:** Classifies 4 distinct exercises:
     * Squat
     * Push-up
     * Shoulder Press
-    * Bicep Curl
-* **Repetition Counting:** Uses geometric logic combined with AI classification to count valid reps.
-* **Calorie Estimation:** Estimates calories burned per rep based on exercise type.
-* **Audio Feedback:** TTS (Text-to-Speech) announces rep counts and sets.
-* **Visual Feedback:** On-screen skeleton overlay, progress bars, and stability indicators.
-* **Privacy First:** All processing is done locally on the CPU (no video sent to the cloud).
+    * Barbell Bicep Curl
+* **Repetition Counting:** Combines geometric triggers with GRU classification to count valid repetitions accurately.
+* **Calorie Estimation:** Estimates calories burned per rep based on exercise type and intensity.
+* **Audio-Visual Feedback:** Real-time TTS (Text-to-Speech) announcements and on-screen skeletal overlays with stability indicators.
+* **Privacy First:** All processing is performed locally on the CPU using PyTorch; no video data is sent to the cloud.
 
 ## 🛠️ Architecture
 The system operates on a 3-stage pipeline:
 
-1.  **Data Acquisition:**
-    * Input: Webcam video stream.
-    * Tool: **MediaPipe Pose** extracts 33 3D skeletal landmarks.
-2.  **Feature Engineering:**
-    * Raw coordinates (x, y, z) are converted into **6 biomechanical joint angles**.
-    * This makes the model invariant to camera distance and user height.
-3.  **Classification (Deep Learning):**
-    * **Model:** Custom LSTM (Recurrent Neural Network).
-    * **Input:** A sliding window of **30 frames** (temporal sequence).
-    * **Output:** Probability distribution across the 4 exercise classes.
-  
+1. **Data Acquisition:** Extracts 33 3D skeletal landmarks from the webcam stream using **MediaPipe Pose**.
+2. **Feature Engineering:** Converts raw coordinates into **6 biomechanical joint angles** (knees, elbows, and shoulders) to ensure the model remains invariant to camera distance and user height.
+3. **Classification:** A **GRU** model receives a sequence of 30 frames and outputs a probability distribution across the exercise classes.
+
 ## 📂 Project Structure
 ```bash
 GymTrainer/
 ├── models/
-│   ├── gym_lstm_model.keras    # 🏆 Final LSTM Model (Deep Learning)
-│   └── gym_pose_classifier.pkl # 📉 Baseline Decision Tree Model (Weights)
+│   ├── gym_gru_model.pt       # 🏆 Final GRU Model (PyTorch)
+│   └── random_forest_base.pkl # 📉 Baseline Random Forest Model
 │
 ├── data_processing/
-│   ├── X_data.npy              # Processed features for LSTM
-│   ├── y_data.npy              # Processed labels for LSTM
-│   └── classes.npy             # Class names (Squat, Push-up, etc.)
+│   ├── X_data.npy              # Processed features (30-frame sequences)
+│   ├── y_data.npy              # Labels
+│   └── classes.npy             # Class names
 │
 ├── scripts/
-│   ├── train_lstm.py           # Main script to train the LSTM model
-│   ├── preprocess.py           # Data extraction pipeline for LSTM
-│   ├── old_preprocess.txt      # training for Decision Tree Baseline
-│   └── main.py                 # 🚀 Main Application (Webcam Inference)
+│   ├── train_gru.py           # GRU training script (PyTorch)
+│   ├── preprocess.py           # Data extraction & angle calculation
+│   ├── rf_baseline.py          # Random Forest training script
+│   └── main.py                 # 🚀 Main Application (Inference)
 │
-├── Final_project_poster - deep project.pptx  # 🖼️ Project Poster Presentation
+├── Final_project_poster.pptx   # Project Poster Presentation
 └── README.md                   # Project Documentation
